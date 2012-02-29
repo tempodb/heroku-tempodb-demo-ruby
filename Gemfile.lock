@@ -3,10 +3,13 @@ GEM
   specs:
     daemons (1.1.8)
     eventmachine (0.12.10)
+    json (1.6.5)
     rack (1.4.1)
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
+    tempodb (0.1.0)
+      json
     thin (1.2.7)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -18,4 +21,5 @@ PLATFORMS
 
 DEPENDENCIES
   sinatra (= 1.1.0)
+  tempodb
   thin (= 1.2.7)
