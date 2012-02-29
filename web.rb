@@ -14,8 +14,8 @@ get '/' do
   out = ""
   client.get_series().each{ |series| out += series.to_json + "<br/>"  }
 
-  #end = Time.now
+  ending = Time.now
 
-  client.write_key("heroku-page-load-speed", [{ 't'=>Time.now.iso8601, 'v'=>34 }])
+  client.write_key("heroku-page-load-speed", [{ 't'=>Time.now.iso8601, 'v'=>ending-start }])
   out
 end
