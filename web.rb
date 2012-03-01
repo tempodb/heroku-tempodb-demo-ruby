@@ -2,7 +2,7 @@ require 'sinatra'
 require 'tempodb'
 
 get '/' do
-  start = Time.now
+  request_start = Time.now
 
   api_key = ENV['TEMPODB_API_KEY']
   api_secret = ENV['TEMPODB_API_SECRET']
@@ -10,12 +10,14 @@ get '/' do
   api_port = Integer(ENV['TEMPODB_API_PORT'])
   api_secure = ENV['TEMPODB_API_SECURE'] == "False" ? false : true
 
+  read_start = Time.now
   client = TempoDB::Client.new( api_key, api_secret, api_host, api_port, api_secure )
+  read_end = Time.now
   out = ""
   client.get_series().each{ |series| out += series.to_json + "<br/>"  }
 
-  ending = Time.now
+  request_end = Time.now
 
-  client.write_key("heroku-page-load-speed", [{ 't'=>Time.now.iso8601, 'v'=>ending-start }])
+  client.write_bulk( Time.now, [ {'key'=>'heroku-page-load-speed', 'v'=>request_end-request_start}, {'key'=>'heroku-tempodb-read-speed', 'v'=>read_end-read_start} ] )
   out
 end
