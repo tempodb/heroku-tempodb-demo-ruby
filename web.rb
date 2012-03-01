@@ -10,11 +10,15 @@ get '/' do
   api_port = Integer(ENV['TEMPODB_API_PORT'])
   api_secure = ENV['TEMPODB_API_SECURE'] == "False" ? false : true
 
-  read_start = Time.now
+  
   client = TempoDB::Client.new( api_key, api_secret, api_host, api_port, api_secure )
-  read_end = Time.now
   out = ""
-  client.get_series().each{ |series| out += series.to_json + "<br/>"  }
+
+  read_start = Time.now
+  series = client.get_series()
+  read_end = Time.now
+
+  series.each{ |series| out += series.to_json + "<br/>"  }
 
   request_end = Time.now
 
